@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pengecek Berat Badan Ideal</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            box-sizing: border-box;
+        }
+        h2 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:active {
+            background-color: #219653;
+        }
+        .result-box {
+            margin-top: 20px;
+            padding: 15px;
+            background: #e8f8f5;
+            border-left: 5px solid #27ae60;
+            border-radius: 4px;
+            display: none;
+        }
+        .result-box h3 {
+            margin: 0 0 10px 0;
+            color: #27ae60;
+            font-size: 16px;
+        }
+        .result-box p {
+            margin: 0;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Cek Berat Badan Ideal</h2>
+        
+        <div class="form-group">
+            <label for="gender">Jenis Kelamin:</label>
+            <select id="gender">
+                <option value="male">Pria</option>
+                <option value="female">Wanita</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="height">Tinggi Badan (cm):</label>
+            <input type="number" id="height" placeholder="Contoh: 170" inputmode="numeric">
+        </div>
+        
+        <div class="form-group">
+            <label for="weight">Berat Badan (kg):</label>
+            <input type="number" id="weight" placeholder="Contoh: 65" inputmode="numeric">
+        </div>
+        
+        <button onclick="hitungBMI()">Cek Status Badan</button>
+
+        <div id="result" class="result-box">
+            <h3 id="statusTitle">Hasil Analisis</h3>
+            <p id="resultText"></p>
+        </div>
+    </div>
+
+    <script>
+        function hitungBMI() {
+            const gender = document.getElementById('gender').value;
+            const heightInput = document.getElementById('height').value;
+            const weightInput = document.getElementById('weight').value;
+
+            // Validasi jika kosong
+            if (heightInput === '' || weightInput === '') {
+                alert('Mohon masukkan tinggi dan berat badan dengan benar!');
+                return;
+            }
+
+            const height = parseFloat(heightInput) / 100; // Ubah cm ke meter
+            const weight = parseFloat(weightInput);
+
+            // Rumus Indeks Massa Tubuh (IMT / BMI)
+            const bmi = weight / (height * height);
+            let kategori = '';
+            let saran = '';
+
+            // Penentuan Kategori BMI Standar
+            if (bmi < 18.5) {
+                kategori = 'Kurus (Berat Badan Kurang)';
+                saran = 'Perbanyak konsumsi makanan bergizi seimbang dan protein untuk menambah massa otot secara sehat.';
+            } else if (bmi >= 18.5 && bmi <= 24.9) {
+                kategori = 'Normal / Ideal';
+                saran = 'Pertahankan pola makan sehat dan rutin berolahraga agar tetap bugar!';
+            } else if (bmi >= 25.0 && bmi <= 29.9) {
+                kategori = 'Gemuk (Kelebihan Berat Badan)';
+                saran = 'Kurangi makanan tinggi gula/minyak serta tingkatkan aktivitas fisik atau cardio.';
+            } else {
+                kategori = 'Obesitas';
+                saran = 'Disarankan untuk berkonsultasi dengan ahli gizi atau dokter guna mengatur pola diet yang aman.';
+            }
+
+            // Menampilkan hasil ke layar
+            const resultBox = document.getElementById('result');
+            const resultText = document.getElementById('resultText');
+            
+            resultBox.style.display = 'block';
+            resultText.innerHTML = `
+                Skor IMT Anda: <strong>${bmi.toFixed(1)}</strong><br>
+                Kategori: <strong>${kategori}</strong><br><br>
+                <em>Saran: ${saran}</em>
+            `;
+        }
+    </script>
+
+</body>
+</html>
